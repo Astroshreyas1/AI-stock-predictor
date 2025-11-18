@@ -1,0 +1,9 @@
+{
+  "ticker": "AAPL",
+  "trained_at": "2025-11-18T10:40:30.963231",
+  "period": "5y",
+  "interval": "1d",
+  "hold_period": 3,
+  "profit_threshold": 0.04,
+  "model_version": "high_accuracy_v1"
+}

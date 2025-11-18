@@ -1,0 +1,18 @@
+{
+  "ticker": "AAPL",
+  "trained_at": "2025-11-17T19:23:10.067659Z",
+  "best_params": {
+    "learning_rate": 0.05,
+    "max_depth": 4,
+    "n_estimators": 100
+  },
+  "test_accuracy": 1.0,
+  "test_roc_auc": 1.0,
+  "backtest": {
+    "strategy_cum": 2.356708696321155,
+    "buy_hold_cum": 1.2649803758295757,
+    "sharpe": 8.985727347935832,
+    "threshold": 0.55
+  },
+  "news_summary": "analyzed 8 headlines"
+}

@@ -1,0 +1,22 @@
+{
+  "ticker": "AAPL",
+  "trained_at": "2025-11-17T20:03:49.591703Z",
+  "base_params": {
+    "rf": {
+      "max_depth": 8,
+      "n_estimators": 200
+    }
+  },
+  "meta_test_acc": 1.0,
+  "meta_test_roc": 1.0,
+  "backtest": {
+    "strategy_cum": 3.7628275537712894,
+    "buy_hold_cum": 1.0876042865842555,
+    "sharpe": 7.493725389880954,
+    "threshold": 0.55
+  },
+  "regime_info": {
+    "0": 599,
+    "1": 356
+  }
+}

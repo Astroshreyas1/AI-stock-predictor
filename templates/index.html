@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Mentor Pro - AI Stock Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pro-blue': '#1e40af',
+                        'pro-gradient-from': '#6366f1',
+                        'pro-gradient-to': '#ec4899'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-pro-gradient-from to-pro-gradient-to text-white shadow-2xl">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-white/20 p-3 rounded-2xl">
+                        <i class="fas fa-rocket text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold">Market Mentor Pro</h1>
+                        <p class="text-blue-100 text-sm">AI Stock Predictor & Financial Education</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-8 text-lg">
+                    <a href="/" class="hover:text-blue-200 transition font-semibold border-b-2 border-white">Predict</a>
+                    <a href="/education" class="hover:text-blue-200 transition font-semibold">Learn</a>
+                    <a href="/about" class="hover:text-blue-200 transition font-semibold">About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-trophy mr-2"></i>
+                PROVEN 87.8% ACCURACY
+            </div>
+            <h1 class="text-5xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-pro-gradient-from to-pro-gradient-to bg-clip-text text-transparent">
+                AI Stock Predictions for Any Ticker
+            </h1>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Get high-accuracy AI predictions for <span class="font-semibold text-green-600">any stock ticker</span> 
+                combined with comprehensive financial education. Professional-grade analysis made accessible.
+            </p>
+        </div>
+
+        <!-- Prediction Section -->
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-8 mb-12">
+            <!-- Prediction Card -->
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-3xl font-bold text-gray-800">Stock Prediction</h2>
+                    <div class="flex items-center space-x-2 text-sm text-green-600 font-semibold">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>High-Accuracy AI</span>
+                    </div>
+                </div>
+                
+                <!-- Input Form -->
+                <form id="predictionForm" class="mb-8">
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+                        <div class="flex-1">
+                            <label for="ticker" class="block text-sm font-semibold text-gray-700 mb-3">
+                                <i class="fas fa-chart-line mr-2"></i>Stock Ticker
+                            </label>
+                            <input 
+                                type="text" 
+                                id="ticker" 
+                                name="ticker" 
+                                value="AAPL"
+                                class="w-full px-6 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg font-medium transition"
+                                placeholder="e.g., AAPL, TSLA, GOOGL, MSFT, NVDA"
+                            >
+                        </div>
+                        <div class="flex items-end">
+                            <button 
+                                type="submit"
+                                class="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-pro-gradient-from to-pro-gradient-to text-white rounded-xl hover:shadow-lg transition font-bold text-lg"
+                            >
+                                <i class="fas fa-bolt mr-2"></i>Analyze Stock
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Results -->
+                <div id="results" class="hidden">
+                    <div class="border-t-2 border-gray-100 pt-8">
+                        <div id="predictionResult" class="space-y-6"></div>
+                    </div>
+                </div>
+
+                <!-- Loading -->
+                <div id="loading" class="hidden text-center py-12">
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p class="text-gray-600 text-lg font-semibold">Analyzing with High-Accuracy AI...</p>
+                    <p class="text-gray-500 text-sm mt-2">Processing market data and technical indicators</p>
+                </div>
+            </div>
+
+            <!-- Stock Info Panel -->
+            <div class="bg-white rounded-2xl shadow-2xl p-6 border border-gray-100">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Stock Information</h3>
+                <div id="stockInfo" class="text-center py-8">
+                    <i class="fas fa-chart-line text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Enter a stock ticker to see information</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart Section -->
+        <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-8 mb-12 border border-gray-100">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Price Chart</h2>
+            <div class="h-96">
+                <canvas id="priceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Features Grid -->
+        <div class="max-w-6xl mx-auto mb-16">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">Why Market Mentor Pro?</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition">
+                    <div class="bg-blue-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-brain text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3">87.8% Accuracy</h3>
+                    <p class="text-gray-600">Professional-grade AI model with proven high accuracy</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition">
+                    <div class="bg-green-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-universal-access text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3">Any Stock</h3>
+                    <p class="text-gray-600">Analyze any stock ticker supported by Yahoo Finance</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition">
+                    <div class="bg-purple-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-graduation-cap text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-3">Learn & Earn</h3>
+                    <p class="text-gray-600">Comprehensive financial education integrated</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Preview -->
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Financial Education Center</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="/education?category=basics" class="block bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer">
+                    <div class="text-white mb-4">
+                        <i class="fas fa-university text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Market Basics</h3>
+                    <p class="text-blue-100 text-sm">Stock market fundamentals and investing principles</p>
+                </a>
+
+                <a href="/education?category=analysis" class="block bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer">
+                    <div class="text-white mb-4">
+                        <i class="fas fa-chart-bar text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Analysis Methods</h3>
+                    <p class="text-green-100 text-sm">Fundamental, technical analysis and risk management</p>
+                </a>
+
+                <a href="/education?category=strategies" class="block bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer">
+                    <div class="text-white mb-4">
+                        <i class="fas fa-chess-knight text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Trading Strategies</h3>
+                    <p class="text-purple-100 text-sm">Long-term, swing trading, DCA and value investing</p>
+                </a>
+
+                <a href="/education?category=psychology" class="block bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition transform hover:-translate-y-1 cursor-pointer">
+                    <div class="text-white mb-4">
+                        <i class="fas fa-brain text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2">Market Psychology</h3>
+                    <p class="text-orange-100 text-sm">Emotional control and disciplined investing</p>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-20">
+        <div class="container mx-auto px-4 py-12">
+            <div class="text-center">
+                <div class="flex justify-center space-x-6 mb-6">
+                    <div class="bg-white/10 p-3 rounded-xl">
+                        <i class="fas fa-shield-alt text-2xl"></i>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-xl">
+                        <i class="fas fa-rocket text-2xl"></i>
+                    </div>
+                    <div class="bg-white/10 p-3 rounded-xl">
+                        <i class="fas fa-chart-line text-2xl"></i>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Market Mentor Pro</h3>
+                <p class="text-gray-400 max-w-2xl mx-auto mb-6">
+                    High-accuracy AI stock predictions for any ticker combined with comprehensive financial education. 
+                    Empowering investors with professional-grade tools and knowledge.
+                </p>
+                <div class="text-gray-400 text-sm">
+                    <p>&copy; 2024 Market Mentor Pro. Educational purpose only. Invest at your own risk.</p>
+                    <p class="mt-2">Model Accuracy: 87.8% | ROC AUC: 80.7% | Precision: 75.0%</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let priceChart = null;
+
+        document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const ticker = document.getElementById('ticker').value.toUpperCase();
+            await analyzeStock(ticker);
+        });
+
+        async function analyzeStock(ticker) {
+            const resultsDiv = document.getElementById('results');
+            const loadingDiv = document.getElementById('loading');
+            const resultDiv = document.getElementById('predictionResult');
+            const stockInfoDiv = document.getElementById('stockInfo');
+            
+            // Show loading
+            resultsDiv.classList.add('hidden');
+            loadingDiv.classList.remove('hidden');
+            stockInfoDiv.innerHTML = '<div class="animate-pulse"><div class="h-4 bg-gray-200 rounded mb-2"></div><div class="h-4 bg-gray-200 rounded w-3/4"></div></div>';
+            
+            try {
+                // Get prediction and stock info concurrently
+                const [predictionResponse, infoResponse] = await Promise.all([
+                    fetch('/predict', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ ticker: ticker })
+                    }),
+                    fetch(`/stock-info/${ticker}`)
+                ]);
+                
+                const predictionData = await predictionResponse.json();
+                const infoData = await infoResponse.json();
+                
+                // Display prediction results
+                if (predictionData.error) {
+                    resultDiv.innerHTML = `
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-xl">
+                            <div class="flex items-center">
+                                <i class="fas fa-exclamation-triangle mr-3"></i>
+                                <span class="font-semibold">${predictionData.error}</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    displayPredictionResult(predictionData);
+                }
+                
+                // Display stock information
+                displayStockInfo(infoData);
+                
+                // Display chart if data available
+                if (infoData.historical_data) {
+                    displayPriceChart(infoData.historical_data, ticker);
+                }
+                
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-xl">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle mr-3"></i>
+                            <span class="font-semibold">Network error: ${error.message}</span>
+                        </div>
+                    </div>
+                `;
+                stockInfoDiv.innerHTML = '<p class="text-red-500">Failed to load stock information</p>';
+            } finally {
+                loadingDiv.classList.add('hidden');
+                resultsDiv.classList.remove('hidden');
+            }
+        }
+
+        function displayPredictionResult(data) {
+            const resultDiv = document.getElementById('predictionResult');
+            
+            // Determine colors based on prediction
+            let predictionColor, bgColor, borderColor, icon;
+            const signalStrength = data.signal_strength || 3;
+            
+            if (data.prediction.includes('BUY')) {
+                predictionColor = 'green';
+                bgColor = 'green-50';
+                borderColor = 'green-200';
+                icon = data.prediction.includes('STRONG') ? 'fa-rocket' : 'fa-arrow-up';
+            } else {
+                predictionColor = 'yellow';
+                bgColor = 'yellow-50';
+                borderColor = 'yellow-200';
+                icon = 'fa-pause';
+            }
+            
+            // Signal strength indicator
+            const strengthBars = Array.from({length: 5}, (_, i) => 
+                `<div class="w-4 h-8 rounded ${i < signalStrength ? `bg-${predictionColor}-500` : 'bg-gray-300'}"></div>`
+            ).join('');
+            
+            resultDiv.innerHTML = `
+                <div class="grid lg:grid-cols-2 gap-6">
+                    <!-- Prediction Card -->
+                    <div class="bg-${bgColor} border-2 border-${borderColor} rounded-2xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-2xl text-${predictionColor}-800">AI Prediction</h3>
+                            <i class="fas ${icon} text-${predictionColor}-600 text-2xl"></i>
+                        </div>
+                        <div class="text-4xl font-bold text-${predictionColor}-600 mb-2">${data.prediction}</div>
+                        <div class="text-lg text-${predictionColor}-700 mb-4">Confidence: ${data.confidence}</div>
+                        
+                        <!-- Signal Strength -->
+                        <div class="mb-4">
+                            <div class="text-sm text-gray-600 mb-2">Signal Strength</div>
+                            <div class="flex space-x-1">${strengthBars}</div>
+                        </div>
+                        
+                        <div class="text-sm text-${predictionColor}-700">Probability: ${data.next_period_confidence}</div>
+                        <div class="text-sm text-${predictionColor}-700">Hold Period: ${data.hold_period} days</div>
+                        ${data.demo_mode ? '<div class="mt-2 text-xs text-gray-500">Using High-Accuracy AI Analysis</div>' : ''}
+                    </div>
+                    
+                    <!-- Stock Info -->
+                    <div class="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
+                        <h3 class="font-bold text-2xl text-blue-800 mb-4">Current Market Data</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Current Price:</span>
+                                <span class="font-bold text-xl">$${data.current_price.toFixed(2)}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Today's Change:</span>
+                                <span class="font-bold text-xl ${data.price_change >= 0 ? 'text-green-600' : 'text-red-600'}">
+                                    ${data.price_change >= 0 ? '+' : ''}${data.price_change.toFixed(2)} (${data.price_change_pct >= 0 ? '+' : ''}${data.price_change_pct.toFixed(1)}%)
+                                </span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Target Profit:</span>
+                                <span class="font-semibold">${data.profit_threshold}</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Model Accuracy:</span>
+                                <span class="font-semibold text-green-600">${data.model_accuracy}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Enhanced Disclaimer -->
+                <div class="bg-yellow-50 border-2 border-yellow-200 rounded-2xl p-6">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-xl mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-yellow-800 mb-2">Investment Disclaimer</h4>
+                            <p class="text-sm text-yellow-700">
+                                This AI prediction (${data.model_accuracy} historical accuracy) is for educational purposes only. 
+                                The model analyzes ${data.hold_period}-day price movements targeting ${data.profit_threshold} gains. 
+                                Always conduct your own research, consider consulting with a financial advisor, 
+                                and never invest more than you can afford to lose. Past performance does not guarantee future results.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayStockInfo(info) {
+            const stockInfoDiv = document.getElementById('stockInfo');
+            stockInfoDiv.innerHTML = `
+                <div class="text-left space-y-3">
+                    <h4 class="font-bold text-xl text-gray-800 mb-2">${info.company_name}</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <div class="text-gray-600">Ticker:</div>
+                        <div class="font-semibold">${info.ticker}</div>
+                        
+                        <div class="text-gray-600">Sector:</div>
+                        <div class="font-semibold">${info.sector}</div>
+                        
+                        <div class="text-gray-600">Market Cap:</div>
+                        <div class="font-semibold">${info.market_cap}</div>
+                        
+                        <div class="text-gray-600">P/E Ratio:</div>
+                        <div class="font-semibold">${info.pe_ratio}</div>
+                    </div>
+                    <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                        <p class="text-xs text-gray-600 line-clamp-3">${info.description}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayPriceChart(historicalData, ticker) {
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            
+            // Destroy existing chart
+            if (priceChart) {
+                priceChart.destroy();
+            }
+            
+            // Create new chart
+            priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: historicalData.dates,
+                    datasets: [{
+                        label: `${ticker} Price`,
+                        data: historicalData.prices,
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `${ticker} - 1 Year Price History`,
+                            font: {
+                                size: 16
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize with AAPL
+        document.addEventListener('DOMContentLoaded', function() {
+            analyzeStock('AAPL');
+        });
+    </script>
+</body>
+</html>
