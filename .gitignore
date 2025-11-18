@@ -1,0 +1,13 @@
+# Python virtual environment
+.venv/
+venv/
+__pycache__/
+
+# Trained model artifacts
+# (You usually re-train, not store large models)
+artifacts/
+*.joblib
+*.h5
+
+# Log files
+*.log
