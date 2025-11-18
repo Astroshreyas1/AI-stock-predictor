@@ -333,9 +333,9 @@ async def model_info():
     }
 
 if __name__ == "__main__":
-    import uvicorn
+
     print("🚀 Starting Market Mentor Pro - Final Version")
     print("📊 Visit: http://localhost:8000")
     print("💡 Features: Any stock ticker + Charts + Financial Education")
     print("🎯 Accuracy: 87.8% AI Predictions")
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+    
